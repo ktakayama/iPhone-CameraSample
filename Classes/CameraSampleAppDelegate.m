@@ -8,6 +8,17 @@
 
 #import "CameraSampleAppDelegate.h"
 
+@interface OverlayView : UIView
+@end
+
+@implementation OverlayView
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+   UIView *v = self.superview.superview;
+   [[[v subviews] objectAtIndex:0] touchesBegan:touches withEvent:event];
+}
+@end
+
+
 @implementation CameraSampleAppDelegate
 
 @synthesize window;
@@ -26,6 +37,14 @@
    cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
    cameraController.delegate = self;
    // cameraController.showsCameraControls = NO;
+
+   // オーバレイを追加
+   OverlayView *view = [[OverlayView alloc] initWithFrame:CGRectMake(0,0,320,427)];
+   view.backgroundColor = [UIColor redColor];
+   view.alpha = 0.3f;
+   cameraController.cameraOverlayView = view;
+   [view release];
+
    [windowController presentModalViewController:cameraController animated:NO];
    [cameraController release];
 }
@@ -51,3 +70,4 @@
 
 
 @end
+
